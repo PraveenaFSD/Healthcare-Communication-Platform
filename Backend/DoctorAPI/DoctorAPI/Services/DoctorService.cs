@@ -9,10 +9,10 @@ namespace DoctorAPI.Services
 {
     public class DoctorService : IDoctorService
     {
-        private readonly IRepo<int, DoctorDTO> _repo;
+        private readonly IRepo<int, Doctor> _repo;
         private readonly ITokenGenerate _tokenGenerate;
 
-        public DoctorService(IRepo<int, DoctorDTO> doctorRepo,ITokenGenerate tokenGenerate)
+        public DoctorService(IRepo<int, Doctor> doctorRepo,ITokenGenerate tokenGenerate)
         {
             _repo= doctorRepo;
             _tokenGenerate= tokenGenerate;
@@ -26,13 +26,13 @@ namespace DoctorAPI.Services
             item.User.Role = "doctor";
 
 
-            DoctorDTO doctorDTO =await _repo.Add( item);
+            Doctor doctor =await _repo.Add( item);
             UserDTO user;
-            if (doctorDTO != null)
+            if (doctor != null)
             {
                 user = new UserDTO();
-                user.UserId = doctorDTO.User.UserId;
-                user.Role = doctorDTO.User.Role;
+                user.UserId = doctor.User.UserId;
+                user.Role = doctor.User.Role;
                 user.Token =await _tokenGenerate.GenerateToken(user);
                 return user;
             }
@@ -40,6 +40,17 @@ namespace DoctorAPI.Services
             return null;
         }
 
-    
+        public async Task<bool> ApproveDoctor(UpdateDoctorDTO updateDoctor)
+        {
+            Doctor doctorData = await _repo.Get(updateDoctor.Id);
+            doctorData.Status = updateDoctor.Status;
+
+            Doctor doctor = await _repo.Update(doctorData);
+            if (doctor != null)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

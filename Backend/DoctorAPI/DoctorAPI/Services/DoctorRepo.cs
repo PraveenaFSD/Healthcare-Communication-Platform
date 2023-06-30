@@ -5,14 +5,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DoctorAPI.Services
 {
-    public class DoctorRepo : IRepo<int, DoctorDTO>
+    public class DoctorRepo : IRepo<int, Doctor>
     {
         private readonly Context _context;
+        private readonly ILogger<DoctorRepo> _logger;
 
-        public DoctorRepo(Context context) {
+        public DoctorRepo(Context context, ILogger<DoctorRepo> logger) {
             _context = context;
+            _logger= logger;
         }
-        public async Task<DoctorDTO?> Add(DoctorDTO item)
+        public async Task<Doctor?> Add(Doctor item)
         {
             {
                 var transaction = _context.Database.BeginTransaction();
@@ -33,24 +35,67 @@ namespace DoctorAPI.Services
             }
         }
 
-        public Task<DoctorDTO?> Delete(int key)
+        public Task<Doctor?> Delete(int key)
         {
             throw new NotImplementedException();
         }
 
-        public Task<DoctorDTO?> Get(int key)
+        public async Task<Doctor?> Get(int key)
+        {
+
+            try
+            {
+                Doctor doctor = await _context.Doctors.FirstOrDefaultAsync(u => u.Id == key);
+                return doctor;
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+
+            }
+            return null;
+        }
+
+        public Task<ICollection<Doctor>?> GetAll()
         {
             throw new NotImplementedException();
         }
 
-        public Task<ICollection<DoctorDTO>?> GetAll()
+        public async Task<Doctor?> Update(Doctor item)
         {
-            throw new NotImplementedException();
-        }
+            
+            try
+            {
+                Doctor doctor = await Get(item.Id);
+                if (doctor != null)
+                {
+                    doctor.FirstName= item.FirstName;
+                    doctor.LastName= item.LastName;
+                    doctor.DateOfBirth= item.DateOfBirth;
+                    doctor.Email= item.Email;
+                    doctor.Age= item.Age;
+                    doctor.Gender= item.Gender;
+                    doctor.Phone= item.Phone;
+                    doctor.Address= item.Address;
+                    doctor.Email=item.Email;
+                    doctor.Specialization= item.Specialization;
+                    doctor.LicenseNumber = item.LicenseNumber;
+                    item.Status= item.Status;
+                    item.Experience= item.Experience;
 
-        public Task<DoctorDTO?> Update(DoctorDTO item)
-        {
-            throw new NotImplementedException();
+                    await _context.SaveChangesAsync();
+             
+                    return doctor;
+
+                }
+            }
+            catch (Exception ex)
+            {
+                    _logger.LogError(ex.Message);
+            }
+            return null;
+
         }
     }
 }

@@ -45,5 +45,19 @@ namespace DoctorAPI.Controllers
             return BadRequest(new Error(2, "Patient Details not added "));
 
         }
+        [HttpPut("Approvedisapprovedoctor")]
+        [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> ApproveDoctor(UpdateDoctorDTO updateDTO)
+        {
+            var patient = await _doctorService.ApproveDoctor(updateDTO);
+            if (patient)
+            {
+                return Accepted("Approved Doctor Details Succecssfully");
+            }
+            return BadRequest(new Error(2, "Cannot Approve Doctor "));
+
+        }
+
     }
 }
