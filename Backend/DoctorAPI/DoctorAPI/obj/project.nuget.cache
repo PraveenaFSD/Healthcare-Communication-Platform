@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "rPP9hb01547bH322zCkHYjdOcAKRGcomgqqxwM4x4cG9eKo12dWr4a0HptYZQ0FJJNTBpYwy3dkCTqHF2gSxBw==",
+  "dgSpecHash": "pjLLF4mbbSZp8hz37abA63jaTspM7+ReqLUNNBDo1LduLrsh/9gWW3wbobt7Nn/JRimvd0coytzil5R8ndU2KQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Praveena Murugan\\Desktop\\Big Bang\\Backend\\DoctorAPI\\DoctorAPI\\DoctorAPI.csproj",
+  "projectFilePath": "C:\\Users\\Praveena Murugan\\Desktop\\Hospital Management\\Backend\\DoctorAPI\\DoctorAPI\\DoctorAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Praveena Murugan\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\Praveena Murugan\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\6.0.19\\microsoft.aspnetcore.authentication.jwtbearer.6.0.19.nupkg.sha512",
