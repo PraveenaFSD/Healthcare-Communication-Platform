@@ -1,4 +1,5 @@
 ﻿using DoctorAPI.Interfaces;
+using DoctorAPI.Models;
 using DoctorAPI.Models.DTO;
 using System.Security.Cryptography;
 using System.Text;
@@ -7,10 +8,10 @@ namespace DoctorAPI.Services
 {
     public class PatientService : IPatientService
     {
-        private readonly IRepo<int, PatientDTO> _patientRepo;
+        private readonly IRepo<int, Patient> _patientRepo;
         private readonly ITokenGenerate _tokenGenerate;
 
-        public PatientService(IRepo<int,PatientDTO> patientRepo,ITokenGenerate tokenGenerate) {
+        public PatientService(IRepo<int,Patient> patientRepo,ITokenGenerate tokenGenerate) {
             _patientRepo = patientRepo;
             _tokenGenerate=tokenGenerate;
         }
@@ -23,17 +24,37 @@ namespace DoctorAPI.Services
             item.User.Role = "patient";
 
 
-            PatientDTO patientDTO = await _patientRepo.Add(item);
+            Patient patient = await _patientRepo.Add(item);
             UserDTO user;
-            if (patientDTO != null)
+            if (patient != null)
             {
                 user = new UserDTO();
-                user.UserId = patientDTO.User.UserId;
-                user.Role = patientDTO.User.Role;
+                user.UserId = patient.User.UserId;
+                user.Role = patient.User.Role;
                 user.Token = await _tokenGenerate.GenerateToken(user);
                 return user;
             }
 
+            return null;
+        }
+
+        public async Task<bool> DeletePatient(int key)
+        {
+            Patient  patient = await _patientRepo.Delete(key);
+            if (patient != null)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public async Task<ICollection<Patient>> GetAllDPatients()
+        {
+            ICollection<Patient> patients= await _patientRepo.GetAll();
+            if(patients!=null)
+            {
+                return patients;
+            }
             return null;
         }
     }

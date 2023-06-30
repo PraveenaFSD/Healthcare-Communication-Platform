@@ -52,5 +52,26 @@ namespace DoctorAPI.Services
             }
             return false;
         }
+
+        public async Task<bool> DeleteDoctor(int key)
+        {
+            Doctor doctor= await _repo.Delete(key);
+            if(doctor != null)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public async Task<ICollection<Doctor>> GetAllDoctors()
+        {
+            ICollection<Doctor> doctors = await _repo.GetAll();
+            if(doctors!=null)
+            {
+                return doctors;
+            }
+            return null; 
+
+        }
     }
 }

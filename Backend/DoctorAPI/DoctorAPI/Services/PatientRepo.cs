@@ -5,14 +5,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DoctorAPI.Services
 {
-    public class PatientRepo : IRepo<int, PatientDTO>
+    public class PatientRepo : IRepo<int, Patient>
     {
         private readonly Context _context;
+        private readonly ILogger<PatientRepo> _logger;
 
-        public PatientRepo(Context context) {
+        public PatientRepo(Context context, ILogger<PatientRepo> logger) {
             _context = context;
+            _logger= logger;
         }
-        public async Task<PatientDTO?> Add(PatientDTO item)
+        public async Task<Patient?> Add(Patient item)
         {
             {
                 var transaction = _context.Database.BeginTransaction();
@@ -33,22 +35,61 @@ namespace DoctorAPI.Services
             }
         }
 
-        public Task<PatientDTO?> Delete(int key)
+        public async Task<Patient?> Delete(int key)
         {
-            throw new NotImplementedException();
+            Patient patient = await Get(key);
+            {
+                var transaction = _context.Database.BeginTransaction();
+                try
+                {
+                    transaction.CreateSavepoint("Patient");
+                    _context.Patients.Remove(patient);
+                    _context.Users.Remove(patient.User);
+                    await _context.SaveChangesAsync();
+                    transaction.Commit();
+                    return patient;
+                }
+                catch (Exception)
+                {
+                    transaction.RollbackToSavepoint("Patient");
+                }
+                return null;
+            }
         }
 
-        public Task<PatientDTO?> Get(int key)
+        public async Task<Patient?> Get(int key)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Patient patient = await _context.Patients.Include(u => u.User).FirstOrDefaultAsync(u => u.Id == key);
+                return patient;
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+
+            }
+            return null;
         }
 
-        public Task<ICollection<PatientDTO>?> GetAll()
+        public async Task<ICollection<Patient>?> GetAll()
         {
-            throw new NotImplementedException();
+            try
+            {
+                ICollection<Patient> patients = await _context.Patients.ToListAsync();
+                return patients;
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+
+            }
+            return null;
         }
 
-        public Task<PatientDTO?> Update(PatientDTO item)
+        public Task<Patient?> Update(Patient item)
         {
             throw new NotImplementedException();
         }

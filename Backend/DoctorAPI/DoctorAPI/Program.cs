@@ -25,9 +25,12 @@ namespace DoctorAPI
             builder.Services.AddDbContext<Context>
       (options => options.UseSqlServer(builder.Configuration.GetConnectionString("conn")));
             builder.Services.AddScoped<IRepo<int, Doctor>, DoctorRepo>();
-            builder.Services.AddScoped<IRepo<int, PatientDTO>, PatientRepo>();
+            builder.Services.AddScoped<IRepo<int, Patient>, PatientRepo>();
+            builder.Services.AddScoped<IRepo<int, User>, UserRepo>();
             builder.Services.AddScoped<IDoctorService, DoctorService>();
             builder.Services.AddScoped<IPatientService, PatientService>();
+            builder.Services.AddScoped<IManageService, UserService>();
+
 
             builder.Services.AddScoped<ITokenGenerate, TokenService>();
 

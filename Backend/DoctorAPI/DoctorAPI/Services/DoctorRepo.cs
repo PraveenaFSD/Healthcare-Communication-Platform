@@ -2,6 +2,7 @@
 using DoctorAPI.Models;
 using DoctorAPI.Models.DTO;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace DoctorAPI.Services
 {
@@ -35,9 +36,27 @@ namespace DoctorAPI.Services
             }
         }
 
-        public Task<Doctor?> Delete(int key)
+        public async Task<Doctor?> Delete(int key)
         {
-            throw new NotImplementedException();
+            Doctor doctor=await Get(key);
+            {
+                var transaction = _context.Database.BeginTransaction();
+                try
+                {
+                    transaction.CreateSavepoint("Doctor");
+                    _context.Doctors.Remove(doctor);
+                    _context.Users.Remove(doctor.User);
+                    await _context.SaveChangesAsync();
+                    transaction.Commit();
+                    return doctor;
+                }
+                catch (Exception)
+                {
+                    transaction.RollbackToSavepoint("Doctor");
+                }
+                return null;
+            }
+
         }
 
         public async Task<Doctor?> Get(int key)
@@ -45,7 +64,7 @@ namespace DoctorAPI.Services
 
             try
             {
-                Doctor doctor = await _context.Doctors.FirstOrDefaultAsync(u => u.Id == key);
+                Doctor doctor = await _context.Doctors.Include(u=>u.User).FirstOrDefaultAsync(u => u.Id == key);
                 return doctor;
 
             }
@@ -57,9 +76,20 @@ namespace DoctorAPI.Services
             return null;
         }
 
-        public Task<ICollection<Doctor>?> GetAll()
+        public async Task<ICollection<Doctor>?> GetAll()
         {
-            throw new NotImplementedException();
+            try
+            {
+                ICollection<Doctor> doctor = await _context.Doctors.ToListAsync();
+                return doctor;
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+
+            }
+            return null;
         }
 
         public async Task<Doctor?> Update(Doctor item)
