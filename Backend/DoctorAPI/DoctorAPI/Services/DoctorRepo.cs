@@ -111,11 +111,8 @@ namespace DoctorAPI.Services
                     doctor.Email=item.Email;
                     doctor.Specialization= item.Specialization;
                     doctor.LicenseNumber = item.LicenseNumber;
-                    item.Status= item.Status;
                     item.Experience= item.Experience;
-
                     await _context.SaveChangesAsync();
-             
                     return doctor;
 
                 }

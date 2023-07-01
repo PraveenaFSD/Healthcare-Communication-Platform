@@ -89,9 +89,24 @@ namespace DoctorAPI.Services
             return null;
         }
 
-        public Task<Patient?> Update(Patient item)
+        public async Task<Patient?> Update(Patient item)
         {
-            throw new NotImplementedException();
+            Patient patient= await Get(item.Id);
+            if(patient!= null) {
+                patient.FirstName= item.FirstName;
+                patient.LastName= item.LastName;
+                patient.DateOfBirth= item.DateOfBirth;
+                patient.Age= item.Age;
+                patient.Gender= item.Gender;
+                patient.Address=item.Address;
+                patient.PhoneNumber= item.PhoneNumber;
+                patient.Email= item.Email;
+                patient.BloodGroup= item.BloodGroup;
+                await _context.SaveChangesAsync();
+                return patient;
+
+            }
+            return null;
         }
     }
 }

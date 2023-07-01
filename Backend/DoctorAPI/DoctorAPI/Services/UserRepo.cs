@@ -44,9 +44,17 @@ namespace DoctorAPI.Services
             throw new NotImplementedException();
         }
 
-        public Task<User?> Update(User item)
+        public async Task<User?> Update(User item)
         {
-            throw new NotImplementedException();
+            User user = await Get(item.UserId);
+            if(user!=null)
+            {
+                user.PasswordKey= item.PasswordKey;
+                user.PasswordHash= item.PasswordHash;
+                await _context.SaveChangesAsync();
+                return user;
+            }
+            return null;
         }
     }
 }

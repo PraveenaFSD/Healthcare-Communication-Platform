@@ -9,7 +9,7 @@ namespace DoctorAPI.Interfaces
         public Task<bool> ApproveDoctor(UpdateDoctorDTO item);
         public Task<ICollection<Doctor>> GetAllDoctors( );
 
-        public Task<bool> DeleteDoctor(int key );
+     
 
 
     }

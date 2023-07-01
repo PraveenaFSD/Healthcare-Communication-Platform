@@ -8,31 +8,56 @@ namespace DoctorAPI.Services
 {
     public class UserService : IManageService
     {
-        private readonly IRepo<int, User> _repo;
+        private readonly IRepo<int, User> _userRepo;
         private readonly IRepo<int, Doctor> _doctorRepo;
         private readonly ITokenGenerate _tokenGenerate;
+        private readonly IRepo<int, Patient> _patientRepo;
 
-        public UserService(IRepo<int,User> repo, IRepo<int, Doctor> repoDoctor,ITokenGenerate tokenGenerate) {
-            _repo = repo;
+        public UserService(IRepo<int,User> repo, IRepo<int, Doctor> repoDoctor,ITokenGenerate tokenGenerate, IRepo<int,Patient> patientRepo) {
+            _userRepo = repo;
             _doctorRepo = repoDoctor;
             _tokenGenerate= tokenGenerate;
+            _patientRepo= patientRepo;
         }
+
+        public async Task<bool> DeleteUser(IdDTO id)
+        {
+            User user = await _userRepo.Get(id.UserId);
+            if(user.Role=="doctor".ToLower())
+            {
+                Doctor doctor=await _doctorRepo.Delete(id.UserId);
+                if(doctor!=null)
+                {
+                    return true;
+                }
+   
+            }
+
+             Patient patient=await _patientRepo.Delete(id.UserId);
+            if(patient!=null)
+            {
+                return true;
+            }
+           
+            return false;
+        }
+
         public async Task<UserDTO> LoginUser(UserDTO user)
         {
             UserDTO userDetails = null;
             bool s = false;
-            var userData = await _repo.Get(user.UserId);
+            var userData = await _userRepo.Get(user.UserId);
             var hmac = new HMACSHA512(userData.PasswordKey);
             if (userData != null)
             {
                 var password = hmac.ComputeHash(Encoding.UTF8.GetBytes(user.Password));
-                //for (int i = 0; i < password.Length; i++)
-                //{
-                //    if (password[i] != userData.PasswordHash[i])
-                //    {
-                //        return null;
-                //    }
-                //}
+                for (int i = 0; i < password.Length; i++)
+                {
+                    if (password[i] != userData.PasswordHash[i])
+                    {
+                        return null;
+                    }
+                }
             }
 
             if (userData.Role == "doctor" || (userData.Role == "patient"))
@@ -48,6 +73,30 @@ namespace DoctorAPI.Services
                 }
             }
            
+
+            return null;
+        }
+
+        public async Task<UserDTO> UpdateUserPassword(UserDTO user)
+        {
+
+            User userData = await _userRepo.Get(user.UserId);
+            if (userData != null)
+            {
+                var hmac = new HMACSHA512();
+
+                userData.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(user.Password));
+                userData.PasswordKey = hmac.Key;
+                var updateduser = await _userRepo.Update(userData);
+                if (updateduser != null)
+                {
+                    UserDTO userResult = new UserDTO();
+                    userResult.UserId = userData.UserId;
+                    userResult.Role = userData.Role;
+                    return userResult;
+
+                }
+            }
 
             return null;
         }

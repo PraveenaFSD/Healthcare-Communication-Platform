@@ -86,48 +86,49 @@ namespace DoctorAPI.Controllers
             return NotFound(new Error(1, "No Patient Details Currently"));
 
         }
-        [HttpDelete("DeleteDoctor")]
-        [ProducesResponseType(typeof(ICollection<Doctor>), 200)]
+    
+        [HttpDelete("DeleteUser")]
+        [ProducesResponseType(StatusCodes. Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> DeleteDoctorDetails(int key)
+        public async Task<IActionResult> DeletePatient(IdDTO key)
         {
-            var doctor = await _doctorService.DeleteDoctor(key);
-            if (doctor)
+            var user = await _manageService.DeleteUser(key);
+            if (user)
             {
-                return Accepted("Deleted Doctor Details Succecssfully");
+                return Accepted("Deleted user Succecssfully");
             }
-            return BadRequest(new Error(2, "Cannot Delete Doctor Details"));
-
-        }
-        [HttpDelete("DeletePatient")]
-        [ProducesResponseType(typeof(ICollection<Doctor>), 200)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> DeletePatient(int key)
-        {
-            var patient = await _patientService.DeletePatient(key);
-            if (patient)
-            {
-                return Accepted("Deleted Patient Details Succecssfully");
-            }
-            return BadRequest(new Error(2, "Cannot Patient Doctor Details"));
+            return BadRequest(new Error(2, "Cannot Details Details of this user"));
 
         }
             [HttpPost("LoginUser")]
-            [ProducesResponseType(typeof(ICollection<UserDTO>), 200)]
-            [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
             public async Task<ActionResult<UserDTO>>  LoginUser(UserDTO key)
             {
-                var patient = await _manageService.LoginUser(key);
-                if (patient!=null)
+                var user = await _manageService.LoginUser(key);
+                if (user!=null)
                 {
-                    return Accepted("Login Successfull");
+                    return Ok(user);
                 }
                 return BadRequest(new Error(2, "Login UnSuccessfull"));
 
             }
-
-
-
+        [HttpPost("UpdateUserPassword")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<UserDTO>> UpdateUserPassword(UserDTO key)
+        {
+            var patient = await _manageService.UpdateUserPassword(key);
+            if (patient != null)
+            {
+                return Accepted("Updated User Password Successfull");
+            }
+            return BadRequest(new Error(2, "Update User Password UnSuccessfull"));
 
         }
+
+
+
+
+    }
 }
