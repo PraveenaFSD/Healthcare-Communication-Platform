@@ -6,9 +6,11 @@
 html {
     height: 100%;
 }
-
+.img-updatedoctor{
+    height: 70%;
+}
 body {
-	background-color: #b4afaf
+	background-color: #ffffff
 }
 
 /*Card containing 2 cards*/
