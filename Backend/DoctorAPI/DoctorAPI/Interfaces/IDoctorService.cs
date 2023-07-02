@@ -8,9 +8,11 @@ namespace DoctorAPI.Interfaces
         public Task<UserDTO> AddDoctor(DoctorDTO item);
         public Task<bool> ApproveDoctor(UpdateDoctorDTO item);
         public Task<ICollection<Doctor>> GetAllDoctors( );
-        public Task<bool> UpdateDoctor(Doctor item);   
+        public Task<bool> UpdateDoctor(Doctor item);
+        public Task<ICollection<Doctor>> GetAllApprovedDoctors();
 
-     
+
+
 
 
     }

@@ -51,7 +51,7 @@ namespace DoctorAPI.Controllers
             return BadRequest(new Error(2, "Patient Details not added "));
 
         }
-        [Authorize(Roles ="admin")]
+        //[Authorize(Roles ="admin")]
         [HttpPut("Approvedisapprovedoctor")]
         [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -79,7 +79,21 @@ namespace DoctorAPI.Controllers
             return NotFound(new Error(1, "No Doctor Details Currently"));
 
         }
-        [Authorize]
+        [HttpGet("GetAllApprovedDoctors")]
+        [ProducesResponseType(typeof(ICollection<Doctor>), 200)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<Doctor>> GetAllApprovedDoctors()
+        {
+            ICollection<Doctor> users = await _doctorService.GetAllApprovedDoctors();
+            if (users != null)
+            {
+                return Ok(users);
+            }
+            return NotFound(new Error(1, "No Doctor Details Currently"));
+
+        }
+        //[Authorize]
+
         [HttpGet("GetAllPatients")]
         [ProducesResponseType(typeof(ICollection<Patient>), 200)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -136,7 +150,7 @@ namespace DoctorAPI.Controllers
             return BadRequest(new Error(2, "Update User Password UnSuccessfull"));
 
         }
-        [Authorize(Roles = "Doctor")]
+        //[Authorize(Roles = "Doctor")]
         [HttpPut("UpdateDoctorDetails")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

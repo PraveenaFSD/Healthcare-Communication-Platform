@@ -63,6 +63,17 @@ namespace DoctorAPI.Services
             return false;
         }
 
+        public async Task<ICollection<Doctor>> GetAllApprovedDoctors()
+        {
+            ICollection<Doctor> doctors = await _repo.GetAll();
+            doctors=doctors.Where(u=>u.Status=="approved".ToLower()).ToList();
+            if (doctors != null)
+            {
+                return doctors;
+            }
+            return null;
+        }
+
         public async Task<ICollection<Doctor>> GetAllDoctors()
         {
             ICollection<Doctor> doctors = await _repo.GetAll();
