@@ -164,7 +164,7 @@ namespace DoctorAPI.Controllers
             return BadRequest(new Error(2, "Cannot Update Doctor "));
 
         }
-        [Authorize(Roles = "Patient")]
+        //[Authorize(Roles = "Patient")]
         [HttpPut("UpdatePatientDetails")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

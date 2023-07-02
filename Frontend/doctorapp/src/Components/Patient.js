@@ -8,10 +8,10 @@ function Patient() {
   return ( 
 <div> <ul className="navbar-nav">
             <li className="nav-item active">
-            <Link className="nav-link" >Get All Doctors</Link>
+            {/* <Link className="nav-link" to="/approveddocter">Get All Doctors</Link>
             </li>
             <li className="nav-item">
-            <Link className="nav-link"  >Update Profile</Link>
+            <Link className="nav-link" to="/getallpatient" >Update Profile</Link> */}
             </li>
           
            
