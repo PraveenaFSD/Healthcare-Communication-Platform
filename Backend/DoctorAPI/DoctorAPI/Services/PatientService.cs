@@ -57,5 +57,15 @@ namespace DoctorAPI.Services
             }
             return null;
         }
+
+        public async Task<bool> UpdatePatient(Patient item)
+        {
+            Patient patient = await _patientRepo.Update(item);
+            if (patient != null)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

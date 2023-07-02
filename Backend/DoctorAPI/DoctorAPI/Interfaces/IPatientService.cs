@@ -8,6 +8,8 @@ namespace DoctorAPI.Interfaces
         public Task<UserDTO> AddPatient(PatientDTO item);
 
         public Task<ICollection<Patient>> GetAllDPatients();
+        public Task<bool> UpdatePatient(Patient item);
+
 
     }
 }

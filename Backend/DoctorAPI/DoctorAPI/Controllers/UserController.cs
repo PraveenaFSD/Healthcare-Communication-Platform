@@ -2,6 +2,8 @@
 using DoctorAPI.Models;
 using DoctorAPI.Models.DTO;
 using DoctorAPI.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,6 +11,8 @@ namespace DoctorAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("AngularCORS")]
+
     public class UserController : ControllerBase
     {
         private readonly IDoctorService _doctorService;
@@ -21,21 +25,21 @@ namespace DoctorAPI.Controllers
             _manageService= manageService;
         }
         [HttpPost("AddDoctor")]
-        [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<DoctorDTO>> AddProductDetails(DoctorDTO doctorDetail)
         {
             var doctor = await _doctorService.AddDoctor(doctorDetail);
             if (doctor != null)
             {
-                return Created("Docrtor", doctor);
+                return Created("Doctor", doctor);
             }
             return BadRequest(new Error(2, "Doctor Details not added "));
 
 
         }
         [HttpPost("AddPatient")]
-        [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<DoctorDTO>> AddPatintDetails(PatientDTO patientDTO)
         {
@@ -47,6 +51,7 @@ namespace DoctorAPI.Controllers
             return BadRequest(new Error(2, "Patient Details not added "));
 
         }
+        [Authorize(Roles ="admin")]
         [HttpPut("Approvedisapprovedoctor")]
         [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -60,6 +65,7 @@ namespace DoctorAPI.Controllers
             return BadRequest(new Error(2, "Cannot Approve Doctor "));
 
         }
+        [Authorize(Roles = "admin")]
         [HttpGet("GetAllDoctors")]
         [ProducesResponseType(typeof(ICollection<Doctor>), 200)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -73,6 +79,7 @@ namespace DoctorAPI.Controllers
             return NotFound(new Error(1, "No Doctor Details Currently"));
 
         }
+        [Authorize]
         [HttpGet("GetAllPatients")]
         [ProducesResponseType(typeof(ICollection<Patient>), 200)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -86,7 +93,8 @@ namespace DoctorAPI.Controllers
             return NotFound(new Error(1, "No Patient Details Currently"));
 
         }
-    
+        [Authorize]
+
         [HttpDelete("DeleteUser")]
         [ProducesResponseType(StatusCodes. Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -113,7 +121,9 @@ namespace DoctorAPI.Controllers
                 return BadRequest(new Error(2, "Login UnSuccessfull"));
 
             }
-        [HttpPost("UpdateUserPassword")]
+        [Authorize]
+
+        [HttpPut("UpdateUserPassword")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<UserDTO>> UpdateUserPassword(UserDTO key)
@@ -126,7 +136,34 @@ namespace DoctorAPI.Controllers
             return BadRequest(new Error(2, "Update User Password UnSuccessfull"));
 
         }
+        [Authorize(Roles = "Doctor")]
+        [HttpPut("UpdateDoctorDetails")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> UpdateDoctorDetails(Doctor doctordata)
+        {
+            var doctor = await _doctorService.UpdateDoctor(doctordata);
+            if (doctor)
+            {
+                return Accepted("Update Doctor Details Succecssfully");
+            }
+            return BadRequest(new Error(2, "Cannot Update Doctor "));
 
+        }
+        [Authorize(Roles = "Patient")]
+        [HttpPut("UpdatePatientDetails")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> UpdatePatientDetails(Patient patientData)
+        {
+            var patient = await _patientService.UpdatePatient(patientData);
+            if (patient)
+            {
+                return Accepted("Update Patient Details Succecssfully");
+            }
+            return BadRequest(new Error(2, "Cannot Update Patient "));
+
+        }
 
 
 

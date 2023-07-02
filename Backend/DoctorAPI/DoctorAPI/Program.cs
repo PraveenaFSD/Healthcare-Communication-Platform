@@ -22,6 +22,13 @@ namespace DoctorAPI
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddCors(opts =>
+            {
+                opts.AddPolicy("AngularCORS", options =>
+                {
+                    options.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
+                });
+            });
             builder.Services.AddDbContext<Context>
       (options => options.UseSqlServer(builder.Configuration.GetConnectionString("conn")));
             builder.Services.AddScoped<IRepo<int, Doctor>, DoctorRepo>();
@@ -91,6 +98,7 @@ namespace DoctorAPI
 
             app.UseAuthorization();
 
+            app.UseCors("AngularCORS");
 
             app.MapControllers();
 
