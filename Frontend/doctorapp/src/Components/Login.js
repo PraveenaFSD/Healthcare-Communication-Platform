@@ -36,6 +36,11 @@ function Login() {
             navigate("/doctor");
 
           }
+          if(myDataa.role=="patient")
+          {
+            navigate("/patient");
+
+          }
           
           
         }
