@@ -1,25 +1,27 @@
 import logo from './logo.svg'
-import React, { useState,Routes } from "react";
-
-
-
+import React, { Routes ,Route} from "react";
+import { Link } from "react-router-dom";
 
 
 function Doctor() {
   
   return ( 
 <div><nav class="navbar navbar-expand-lg navbar-light bg-light">
-{/* <Link className="nav-link" to="/GetAllLeave" >Get All Interns Details</Link> */}
 <a class="navbar-brand" href="#"> Update Profile</a>
 
-
-
+{/* <Routes>
+      
+      <Route path='/getallpatient' element={<GetAllPatient />}/>
+    
+    </Routes> */}
   
 </nav>
 <div><img src={logo} class="img-fluid" alt="Responsive image"/>
 
     </div>
+   
    </div>
+   
 
   )
 }

@@ -4,6 +4,7 @@ import Login from './Components/Login';
 import DocRegister from './Components/DocRegister'
 import "bootstrap/dist/css/bootstrap.css";
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import GetAllPatient from './Components/GetAllPatient';
 
 
 
@@ -12,8 +13,8 @@ function App() {
     <div className="App">
        < BrowserRouter>
     <Routes>
-      <Route path='/' element={<DocRegister />}/>
-      <Route path='/doctor' element={<Doctor />}/>
+      <Route path='/' element={<GetAllPatient />}/>
+      {/* <Route path='/doctor' element={<Doctor />}/> */}
     </Routes>
    </BrowserRouter>
       

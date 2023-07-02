@@ -1,4 +1,4 @@
-import './DocterRegister.css';
+import './DocRegister.css';
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Route, Routes } from "react-router-dom";

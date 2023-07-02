@@ -4,7 +4,7 @@ import './Login.css'
 import doclogo from './doclogo.png'
 import { Link, useNavigate } from 'react-router-dom';
 
-
+import { Doctor } from './Doctor'
 function Login() {
 
   const navigate = useNavigate()
@@ -29,7 +29,16 @@ function Login() {
         localStorage.setItem("token", myDataa.token)
         localStorage.setItem("role", myDataa.role)
         localStorage.setItem("userId", myDataa.userId)
-        navigate("/doctor");
+        if(res.status==200)
+        {
+          if(myDataa.role=="doctor")
+          {
+            navigate("/doctor");
+
+          }
+          
+          
+        }
       }
       ).catch((err) => {
         console.log(err)
