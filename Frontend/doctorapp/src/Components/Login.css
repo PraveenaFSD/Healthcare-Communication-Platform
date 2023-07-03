@@ -212,7 +212,7 @@ p{
 }
 .sec{
     background-color: #ffffff;    position: relative;
-    left: 3%;
+    left: 2%;
         border: 3px solid rgb(255, 255, 255);
 
    
@@ -222,6 +222,24 @@ p{
    
     float: center;
     position: relative;
-    left: 3%;
+    left: 1%;
     width: 100%;
+}
+#box{
+    background-color: #ffffff;
+    left: 1%;
+}
+.nav-doc{
+color: black;
+text-decoration: none;
+font-size: large;
+}
+.na{
+    background-color: #bac0c1;
+}
+.card-img-top{
+    width: 20%;
+    height:30%;
+    position: relative;
+    left:40%
 }

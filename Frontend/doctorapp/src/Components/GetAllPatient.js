@@ -5,11 +5,7 @@ function GetAllPatient() {
 const [patients, setPatients] = useState([]);
 useEffect(() => {
 const token = localStorage.getItem('token');
-console.log(token)
-const config = {
-headers: {
-Authorization: `Bearer ${token}`, }
-};
+
 fetch('https://localhost:7206/api/User/GetAllPatients')  
 .then(response => response.json())
  .then(res => {

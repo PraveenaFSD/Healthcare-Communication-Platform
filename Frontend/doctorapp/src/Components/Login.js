@@ -26,6 +26,7 @@ function Login() {
     })
       .then(async (res) => {
         var myDataa = await res.json();
+        console.log(myDataa)
         localStorage.setItem("token", myDataa.token)
         localStorage.setItem("role", myDataa.role)
         localStorage.setItem("userId", myDataa.userId)
@@ -41,6 +42,10 @@ function Login() {
             navigate("/patient");
 
           }
+          else{
+            navigate("/admin");
+
+          }
           
           
         }
@@ -54,22 +59,22 @@ function Login() {
 
 
   return (<div>
-    <div class="container-fluid">
-      <div class="row justify-content-center" className="tr" >
-        <div class="col-12 col-lg-11" >
+    <div className="container-fluid">
+      <div className="row justify-content-center tr" >
+        <div className="col-12 col-lg-11" >
           <div className="welcome">&nbsp;&nbsp; Welcome Back!!!</div>
           <div className="cd">
-            <div class="card card0 rounded-0" >
+            <div className="card card0 rounded-0" >
 
-              <div class="row">
-                <div class="col-md-5 d-md-block d-none p-0 box"  >
+              <div className="row">
+                <div className="col-md-5 d-md-block d-none p-0 " id="box" >
                   <br /><br />
                   <img src={doclogo} className="img"></img>
                 </div>
 
-                <div class="col-md-7 col-sm-12 p-0 box">
-                  <div class="card rounded-0 border-0 card2" id="paypage" className="sec">
-                    <div class="form-card">
+                <div className="col-md-7 col-sm-12 p-0 box">
+                  <div className="card rounded-0 border-0 card2" id="paypage" >
+                    <div className="form-card">
                       <br /><br />
                       <h2 id="heading2" >Login</h2><br />
 
@@ -81,10 +86,10 @@ function Login() {
                       }} />
 
 
-                      <div class="row" >
-                        <div class="col-md-6">
-                          <Link className="forgot">forgot your password?</Link>			                        </div>
-                        <div class="col-md-6" >
+                      <div className="row" >
+                        <div className="col-md-6">
+                          <Link className="forgot" to="./register">sign in</Link>			                        </div>
+                        <div className="col-md-6" >
                           <button className="login-btn" onClick={login}>Login</button>
                         </div>
                         <br /><p>n</p><br />

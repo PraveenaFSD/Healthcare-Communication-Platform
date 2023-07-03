@@ -1,59 +1,68 @@
 
-import React, { useState } from "react";
+import React, { useState,Route,Routes } from "react";
 import img from './updateDoctor.jpg'
-import { Link, useNavigate } from 'react-router-dom';
-import Patient from './Patient'
+import './UpdateDoctor.css'
+import { Link, useNavigate,navigate } from 'react-router-dom';
+import Register from "./Register";
 
-function UpdatePatient() {
+
+function UpdateDoctor() {
+  const navigate = useNavigate()
+
     const [patient, setPatient] = useState({
 
-        
         user: {
         },
-          "id":0,
+          
         "firstName": "",
         "lastName": "",
         "dateOfBirth": "",
         "age": 0,
-        "phone": "",
+        "gender": "",
         "address": "",
+        "phone":"",
         "email": "",
-        "bloodGroup": "",
+        "bloodGroup": ""
     
       });
-      var updatepatient = async () => {
+      var register = async () => {
         try {
-          var token=localStorage.getItem('token')
           
-          await fetch('https://localhost:7206/api/User/UpdatePatientDetails', {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': 'Bearer '+ token,
-            },
-            body: JSON.stringify(patient)
-          })
-          .then(async (data) => {
-            if(data.status==202)
-            {
-              alert("Update Patient Details Successfull")
+          fetch("https://localhost:7206/api/User/AddPatient", {
+      "method": "POST",
+      headers: {
+        "accept": "text/plain",
+        "Content-Type": 'application/json'
+      },
+      "body": JSON.stringify({ ...patient, "patient": {} })
+    }).then(async (res) => {
+      var myDataa = await res.json();
+      localStorage.setItem("token", myDataa.token)
+      localStorage.setItem("role", myDataa.role)
+      localStorage.setItem("userId", myDataa.userId)
+      if(res.status===201)
+      {
+        
+           alert("Successfully Added Patient Details")
+           navigate('/patient')
 
-            }
-            else{
-              alert("Update Patient Details was UnSuccessfull")
+      }
+      else{
+        alert("UnSuccessfull in Added Patient Details")
 
-            }
-            
-          })
-          //leaves();
+      }
+
+    }
+    )
         } catch (error) {
           console.error(error);
         }
       };
 
-  return (<div><Patient/>
+  return (<div>
+        <Register/>
+
         <div className="col-12 col-lg-11" >
-         
           <div className="cd">
             <div className="card card0 rounded-0" >
 
@@ -66,12 +75,8 @@ function UpdatePatient() {
                   <div className="card rounded-0 border-0 card2 " id="paypage">
                     <div className="form-card">
                       <br />
-                      <h2 id="heading2" >Update Your Profile</h2><br />
-                      <input type="text" className="btn-input" name="holdername" placeholder="User Id" 
-                      onChange={(event) => {
-                        setPatient({ ...patient, "id": event.target.value })
-      
-                      }}/>
+                      <h2 id="heading2" >Add Patient Details</h2><br />
+                  
                       <input type="text" className="btn-input" name="holdername" placeholder="FirstName" 
                      onChange={(event) => {
                         setPatient({ ...patient, "firstName": event.target.value })
@@ -104,15 +109,14 @@ function UpdatePatient() {
                   setPatient({ ...patient, "email": event.target.value })
 
                 }}  />
-           
-
-               
-                      <input type="text" className="btn-input" name="holdername" placeholder="Blood Group" onChange={(event) => {
-                  setPatient({ ...patient, "bloodGroup": event.target.value })
+             
+              
+                      <input type="number" className="btn-input" name="holdername" placeholder="Blood Group" onChange={(event) => {
+                  setPatient({ ...patient, "bloodgroup": event.target.value })
                 }} />
                       <div className="row" >
                         <div className="col-md-10" >
-                          <button className="login-button" onClick={updatepatient} >Update Details</button>
+                          <button className="login-button" onClick={register} >Add Details</button>
                         </div>
                         <br /><p>n</p><br />
 
@@ -124,7 +128,8 @@ function UpdatePatient() {
             </div>
           </div>
       </div>
+      
   </div>);
 
 }
-export default UpdatePatient;
+export default UpdateDoctor;

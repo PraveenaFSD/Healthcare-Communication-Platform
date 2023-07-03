@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import img from './updateDoctor.jpg'
 import './UpdateDoctor.css'
 import { Link, useNavigate } from 'react-router-dom';
+import Patient from "./Patient";
 
 
 function UpdateDoctor() {
@@ -26,24 +27,26 @@ function UpdateDoctor() {
       });
       var updatedoc = async () => {
         try {
-          
+            
+            const token = localStorage.getItem('token');
+            
           await fetch('https://localhost:7206/api/User/UpdateDoctorDetails', {
             method: 'PUT',
             headers: {
-              'Content-Type': 'application/json'
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer '+ token,
+
             },
             body: JSON.stringify(doctor)
           });
           alert("Update Doctor Details Successfull")
-          //leaves();
         } catch (error) {
           console.error(error);
         }
       };
 
-  return (<div>
+  return (<div><Patient/>
         <div className="col-12 col-lg-11" >
-          <div className="welcome">&nbsp;&nbsp; Welcome Back!!!</div>
           <div className="cd">
             <div className="card card0 rounded-0" >
 
