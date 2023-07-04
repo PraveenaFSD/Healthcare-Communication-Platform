@@ -1,8 +1,7 @@
-import logo from './logo.svg'
+import logo from './logo.svg';
+import './Admin.css';
 import React, { Routes ,Route,useState,useEffect} from "react";
 import { Link, useNavigate,navigate } from "react-router-dom";
- 
-;
 
 function Admin() {
     const [doctors, setDoctors] = useState([]);
@@ -29,44 +28,29 @@ var log =()=>{
          .catch(error => {
            console.error(error);
          });
- 
-
     }
   
     
     
   return ( 
-       <div>
-
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-<div class="collapse navbar-collapse" id="navbarSupportedContent">
-<ul class="navbar-nav mr-auto">
-<li class="nav-item active nav-doc">
-<Link to="/getalldoctors" >Get All Doctors</Link>&nbsp;
-</li>
-<li class="nav-item active nav-doc">
-<Link to="/adminprofile"  >Update Password</Link>&nbsp;
-
-</li>
-<li class="nav-item active nav-doc">
-<Link to="/deletedocter"  >Admin Profile</Link>&nbsp;
-
-</li>
-<li class="nav-item active nav-doc">
-<Link onClick={log} to="/" >Log out</Link>&nbsp;
-
-</li>
+       <div >
 
 
+<nav class="navbar navbar-expand-lg navbar-light bg-light" >
+  <a class="navbar-brand" ><Link  className="nav-d"to="/getalldoctors">Get All Doctors</Link></a>
+  <a class="navbar-brand" ><Link className="nav-d" to="/updatepassword">Update Password</Link></a>
+
+  <a class="navbar-brand" ><Link className="nav-d" onClick={log} to="/">Log out</Link></a>
 
 
-</ul>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
 
-</div>
+
 </nav>
 </div>
 
-   
   )}
   export default Admin;
 

@@ -1,9 +1,9 @@
 
 import React, { useState } from "react";
-import img from './updateDoctor.jpg'
+import img from './updateatient.png'
 import './UpdateDoctor.css'
 import { Link, useNavigate } from 'react-router-dom';
-import Patient from "./Patient";
+import Doctor from "./Doctor";
 
 
 function UpdateDoctor() {
@@ -17,7 +17,7 @@ function UpdateDoctor() {
         "lastName": "",
         "dateOfBirth": "",
         "age": 0,
-        "phone": "",
+        "phoneNumber": "",
         "address": "",
         "email": "",
         "specialization": "",
@@ -45,14 +45,14 @@ function UpdateDoctor() {
         }
       };
 
-  return (<div><Patient/>
+  return (<div><Doctor/>
         <div className="col-12 col-lg-11" >
           <div className="cd">
             <div className="card card0 rounded-0" >
 
               <div className="row">
                 <div className="col-md-5 d-md-block d-none p-0 box"  >
-                  <img src={img} className="img-updatedoctor"></img>
+                <img src={img} className="img-updatedoctor"></img>
                 </div>
 
                 <div className="col-md-7 col-sm-12 p-0 box">
@@ -84,7 +84,7 @@ function UpdateDoctor() {
                 }} />
                  
                 <input type="phone" className="btn-input" name="holdername" placeholder="Phone" onChange={(event) => {
-                  setDoctor({ ...doctor, "phone": event.target.value })
+                  setDoctor({ ...doctor, "phoneNumber": event.target.value })
 
                 }} />
                  <input type="text" className="btn-input" name="holdername" placeholder="Address" onChange={(event) => {

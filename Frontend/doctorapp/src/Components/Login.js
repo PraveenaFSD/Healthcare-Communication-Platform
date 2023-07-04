@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
 import './Login.css'
-import doclogo from './doclogo.png'
+import pat from './doclogo.jpg'
 import { Link, useNavigate } from 'react-router-dom';
 
 import { Doctor } from './Doctor'
@@ -32,12 +32,13 @@ function Login() {
         localStorage.setItem("userId", myDataa.userId)
         if(res.status==200)
         {
+          console.log(myDataa.role)
           if(myDataa.role=="doctor")
           {
             navigate("/doctor");
 
           }
-          if(myDataa.role=="patient")
+          else if(myDataa.role=="patient")
           {
             navigate("/patient");
 
@@ -69,7 +70,7 @@ function Login() {
               <div className="row">
                 <div className="col-md-5 d-md-block d-none p-0 " id="box" >
                   <br /><br />
-                  <img src={doclogo} className="img"></img>
+                  <img src={pat} ></img>
                 </div>
 
                 <div className="col-md-7 col-sm-12 p-0 box">

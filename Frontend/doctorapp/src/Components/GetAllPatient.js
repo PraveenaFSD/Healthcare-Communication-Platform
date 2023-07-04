@@ -1,26 +1,39 @@
 import React, { useEffect, useState } from "react";
 import 'bootstrap/dist/css/bootstrap.css';
-
+import Doctor from './Doctor'
 function GetAllPatient() {
 const [patients, setPatients] = useState([]);
+
 useEffect(() => {
-const token = localStorage.getItem('token');
+  const token = localStorage.getItem('token');
+fetch('https://localhost:7206/api/User/GetAllPatients', {
+  "method": "GET",
+  headers: {
+    "accept": "text/plain",
+    "Content-Type": 'application/json',
+    "Authorization": "Bearer "+token
+  },
 
-fetch('https://localhost:7206/api/User/GetAllPatients')  
-.then(response => response.json())
- .then(res => {
-    setPatients(res);
- })
+})
+.then(async (res) => {
+  var myDataa = await res.json();
+  setPatients(myDataa);
+   
+  }
+  ).catch((err) => {
+    console.log(err)
+  })
+}
 
- .catch(error => {
-   console.error(error);
- });
-}, []);
-if (patients.length == 0) {
+);
+if (patients.length === 0) {
+  
 return <div >
+  <Doctor/>
 <h1 className = "alert alert-danger" >Loading the patient details... </h1></div>; }
 return (
-    <div>  <h1>Patient Details</h1><br/>
+    <div>   <Doctor/>
+    <h1>Patient Details</h1><br/>
 
     <div className="alterTable ">
     <table className="table table-striped ">

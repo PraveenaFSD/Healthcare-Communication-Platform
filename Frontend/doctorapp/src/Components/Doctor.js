@@ -11,43 +11,20 @@ var log =()=>{
 }
     return (
       <div>
-          {/* <ul className="navbar-nav">
-              <li className="nav-item active">
-                  <Link className="nav-link" to={"$/approveddocter"}>Get All Doctors</Link>
-              </li>
-              <li className="nav-item">
-                  <Link className="nav-link" to="/getallpatient" >Update Profile</Link>
-              </li>
-          </ul> */}
-          {/* <div>
-              <Routes>
-                  <Route path={"$/approveddocter"} element={<ApprovedDoctors/>}/>
-              </Routes>
-          </div> */}
-          <nav class="navbar navbar-expand-lg navbar-light bg-light">
-<div class="collapse navbar-collapse" id="navbarSupportedContent">
-  <ul class="navbar-nav mr-auto">
-    <li class="nav-item active nav-doc">
-      {/* <a class="nav-link" href="/patient">GetAllDocters <span class="sr-only">(current)</span></a> */}
-      <Link to="/approveddoctors"  className="nav-doc" >GetAllPatient</Link>&nbsp;&nbsp;
-    </li>
-    <li class="nav-item " >
-    <Link to="/updatedoctor" className="nav-doc">UpdateProfile</Link>
-    </li>
-    <li class="nav-item active nav-doc">
-<Link to="/adminprofile"  >Profile</Link>&nbsp;
+        <nav class="navbar navbar-expand-lg navbar-light bg-light" >
+  <a class="navbar-brand" ><Link  className="nav-d"to="/getallpatient">Get All Patient</Link></a>
+  <a class="navbar-brand" ><Link className="nav-d" to="/updatedoctor">Update Profile</Link></a>
+  <a class="navbar-brand" ><Link className="nav-d" to="/docterprofile">Account</Link></a>
 
-</li>
-<li class="nav-item active nav-doc">
-<Link onClick={log} to="/" >Log out</Link>&nbsp;
+  <a class="navbar-brand" ><Link className="nav-d" onClick={log} to="/">Log out</Link></a>
 
-</li>
-    
-   
-  </ul>
- 
-</div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
 </nav>
+
       </div>
    )
 

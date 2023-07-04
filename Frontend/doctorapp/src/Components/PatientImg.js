@@ -8,7 +8,7 @@ import {  useNavigate } from 'react-router-dom';
 import PatientHome from './PatientHome';
 
 
-function Patient() {
+function PatientImg() {
   const [imageToggle,setToggle] = useState(false);
     const navigate = useNavigate()
 
@@ -48,11 +48,11 @@ localStorage.clear();
 
 </nav>
  
-<PatientHome/>
+
         </div>
         
 
 
     );
 }
-export default Patient;
+export default PatientImg;

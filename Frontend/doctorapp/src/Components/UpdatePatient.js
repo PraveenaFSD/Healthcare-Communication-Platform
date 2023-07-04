@@ -1,8 +1,8 @@
 
 import React, { useState } from "react";
-import img from './updateDoctor.jpg'
+import img from './updateatient.png'
 import { Link, useNavigate } from 'react-router-dom';
-import Patient from './Patient'
+import PatientImg from './PatientImg'
 
 function UpdatePatient() {
     const [patient, setPatient] = useState({
@@ -51,7 +51,7 @@ function UpdatePatient() {
         }
       };
 
-  return (<div><Patient/>
+  return (<div><PatientImg/>
         <div className="col-12 col-lg-11" >
          
           <div className="cd">

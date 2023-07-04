@@ -1,12 +1,44 @@
 import doccard from './doccard.jpg'
 import React, { Routes ,Route} from "react";
 import { Link } from "react-router-dom";
-import GetAllPatient from './GetAllPatient';
-import UpdateDoctor from './UpdateDoctor';
+import  { useEffect, useState } from "react";
+
 import Admin from './Admin'
 import './Login.css'
-function DeleteDocter() {
-  
+function AdminProfile() {
+  const [user, setUser] = useState({
+
+    "userId": 0
+  });
+  useEffect(() => {
+      const token = localStorage.getItem('token');
+      const id = localStorage.getItem('id');
+   console.log(id)
+   setUser({...user,"userId": id}) 
+   console.log(user.userId)
+
+   fetch("https://localhost:7206/api/User/GetSingleDoctor", {
+        "method": "POST",
+        headers: {
+          "accept": "text/plain",
+          "Content-Type": 'application/json'
+        },
+        "body": JSON.stringify({ ...user, "user": {} })
+      }).then(async (res) => {
+        var myDataa = await res.json();
+        console.log(myDataa)
+       
+        if(res.status==200)
+        {
+          console.log(res.status)
+          
+          
+        }
+      }
+      ).catch((err) => {
+        console.log(err)
+      })
+  });
 
     return (
       <div>
@@ -31,4 +63,4 @@ function DeleteDocter() {
 
   
 }
-export default DeleteDocter;
+export default AdminProfile;

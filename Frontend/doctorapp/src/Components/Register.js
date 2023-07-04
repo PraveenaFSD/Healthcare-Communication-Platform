@@ -1,8 +1,7 @@
 import logo from './logo.svg'
 import React, { Routes ,Route} from "react";
 import { Link } from "react-router-dom";
-import GetAllPatient from './GetAllPatient';
-import UpdateDoctor from './UpdateDoctor';
+
 
 function Register() {
   

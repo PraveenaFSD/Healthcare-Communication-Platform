@@ -1,36 +1,54 @@
+
+
+
 import React, { useEffect, useState } from "react";
 import 'bootstrap/dist/css/bootstrap.css';
-import Patient from "./Patient";
+import PatientImg from "./PatientImg";
 
 function ApprovedDoctors() {
-    const [doctors, setDoctors] = useState([]);
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-        console.log(token)
-        fetch('https://localhost:7206/api/User/GetAllApprovedDoctors',
+    const [doctors, setDoctors] = useState([
         {
-            method:'GET',
-            headers:{
-                accept:"text/plain",
-                'Authorization': 'Bearer '+ token,
-            }
+            "firstName":""
         }
-        )  .then(async(res) => {
-                var myData=await res.json();
-                setDoctors(myData);
+    ]);
+
+
+
+     useEffect( () => {
+        const token = localStorage.getItem('token');
+      console.log(token)
+        fetch('https://localhost:7206/api/User/GetAllApprovedDoctors', {
+            "method": "GET",
+            headers: {
+              "accept": "text/plain",
+              "Content-Type": 'application/json',
+              "Authorization": "Bearer "+token
+            },
+          
+          })
+            .then(async (res) => {
+              var myDataa = await res.json();
+              setDoctors(myDataa)
+             
+            }
+            ).catch((err) => {
+              console.log(err)
             })
-            .catch(error => {
-                console.error(error);
-            });
-    }, []);
+        }
+      
+      
+      
+      );
+
+
     if (doctors.length == 0) {
-        return <div ><Patient/>
-            <h1 className="alert alert-danger" >Loading the docter details... </h1></div>;
+        return <div ><PatientImg/>
+            <h1 className="alert alert-danger" >Loading the docter details... </h1></div>
     }
     return (
 
 
-        <div><Patient/>
+        <div><PatientImg/>
             <h1>Doctor Details</h1><br />
 
             <div className="alterTable ">
@@ -38,7 +56,6 @@ function ApprovedDoctors() {
                     <thead>
                         <tr className="table-info">
                             <th scope="col">First Name</th>
-                            <th scope="col">Last Name</th>
                             <th scope="col">Date Of Birth</th>
                             <th scope="col">Age </th>
                             <th scope="col">Gender</th>
@@ -52,10 +69,9 @@ function ApprovedDoctors() {
                         </tr>
                     </thead>
                     <tbody>
-                        {doctors && doctors.map((u) => (
+                        { doctors.map((u) => (
                             <tr key={u.id}>
                                 <td >{u.firstName}</td>
-                                <td >{u.lastName}</td>
                                 <td>{u.dateOfBirth}</td>
                                 <td >{u.age}</td>
                                 <td >{u.gender}</td>

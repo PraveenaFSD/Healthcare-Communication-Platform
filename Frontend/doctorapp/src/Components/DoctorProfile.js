@@ -1,8 +1,7 @@
 import doccard from './doccard.jpg'
 import React, { Routes ,Route} from "react";
-import { Link } from "react-router-dom";
+import Doctor from './Doctor'
 
-import Admin from './Admin'
 import './Login.css'
 function DoctorProfile() {
   
@@ -10,7 +9,7 @@ function DoctorProfile() {
     return (
       <div>
 
-<Admin/>
+<Doctor/>
 <div class="card" >
   <img class="card-img-top" src={doccard} alt="Card image cap"/>
   <div class="card-body">

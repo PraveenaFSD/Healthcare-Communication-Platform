@@ -12,22 +12,35 @@ function GetAllDoctors() {
     useEffect(() => {
         const token = localStorage.getItem('token');
      
-        fetch('https://localhost:7206/api/User/GetAllDoctors')
+        fetch('https://localhost:7206/api/User/GetAllDoctors', {
+            "method": "GET",
+            headers: {
+              "accept": "text/plain",
+              "Content-Type": 'application/json',
+              "Authorization": "Bearer "+token
+            },
+          
+          })
             .then(async (res) => {
-                var myDataa = await res.json()
-                setDoctors(myDataa);
+              var myDataa = await res.json();
+              setDoctors(myDataa)
+             
+            }
+            ).catch((err) => {
+              console.log(err)
             })
-            .catch(error => {
-                console.error(error);
-            });
-    }, []);
+        }
+      
+      
+      
+      );
     const updateLeaveStatus = async (id, status) => {
         try {
             const token = localStorage.getItem('token');
      
             const updatedLeaveData = {
                 id: id,
-                status: status === 'approved' ? 'bending' : 'aproved'
+                status: status === 'approved' ? 'bending' : 'approved'
             };
 
             await fetch('https://localhost:7206/api/User/Approvedisapprovedoctor', {
@@ -56,6 +69,43 @@ function GetAllDoctors() {
             console.error(error);
         }
     };
+    const [user, SetUser] = useState({
+
+        "userId":0,
+        
+      });
+    const Del = async (id) => {
+       
+        console.log(user.userId)
+            const token = localStorage.getItem('token');
+              SetUser({...user,"userId": id}) 
+              console.log(user.userId)
+
+              await fetch('https://localhost:7206/api/User/DeleteUser', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': "Bearer "+token
+                },
+                body: JSON.stringify(user)})
+              
+                .then(res => {
+                    console.log(res.status)
+                    if (res.status == 202) {
+                        alert("delete user was successfull");
+                    }
+                    if(res.status == 401 || res.status == 400) {
+                        {
+                            alert("delete user was unsuccessfull");
+
+                        }
+                    }
+                })
+
+                .catch(error => {
+                    console.error(error);
+                });
+    };
 
     if (doctors.length == 0) {
         return <div >     <Admin/>
@@ -74,9 +124,7 @@ function GetAllDoctors() {
                             <th scope="col">User Id</th>
 
                             <th scope="col">First Name</th>
-                            <th scope="col">Last Name</th>
                             <th scope="col">Date Of Birth</th>
-                            <th scope="col">Age </th>
                             <th scope="col">Gender</th>
                             <th scope="col">Address</th>
                             <th scope="col">Phone Number</th>
@@ -85,6 +133,8 @@ function GetAllDoctors() {
 
                             <th scope="col">Specialization</th>
                             <th scope="col">Experience</th>
+                            <th scope="col">Delete User </th>
+
                             
 
 
@@ -99,9 +149,11 @@ function GetAllDoctors() {
                                 <td >{u.id}</td>
 
                                 <td >{u.firstName}</td>
-                                <td >{u.lastName}</td>
-                                <td>{u.dateOfBirth}</td>
-                                <td >{u.age}</td>
+                                <td> {new Date(u.dateOfBirth).toLocaleDateString(undefined, {
+                  day: 'numeric',
+                  month: 'long',
+                  year: 'numeric'
+                })}</td>
                                 <td >{u.gender}</td>
                                 <td >{u.phone}</td>
                                 <td >{u.address}</td>
@@ -116,6 +168,7 @@ function GetAllDoctors() {
 
                                 <td>{u.specialization}</td>
                                 <td>{u.experience}</td>
+                                <td><button onClick={() => Del(u.id)} className='btn-delete' style={{ backgroundColor: u.status === '#f9beb9'  }}>{"Delete"}</button></td>
                             
 
 
