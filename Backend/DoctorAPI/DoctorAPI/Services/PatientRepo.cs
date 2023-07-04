@@ -97,7 +97,6 @@ namespace DoctorAPI.Services
                 patient.LastName= item.LastName;
                 patient.DateOfBirth= item.DateOfBirth;
                 patient.Age= item.Age;
-                patient.Gender= item.Gender;
                 patient.Address=item.Address;
                 patient.PhoneNumber= item.PhoneNumber;
                 patient.Email= item.Email;

@@ -51,7 +51,20 @@ namespace DoctorAPI.Controllers
             return BadRequest(new Error(2, "Patient Details not added "));
 
         }
-        //[Authorize(Roles ="admin")]
+        [HttpPost("AddAdmin")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<DoctorDTO>> AddAdminDetails(UserDTO userDTO)
+        {
+            var user = await _manageService.AddAdmin(userDTO);
+            if (user != null)
+            {
+                return Created("User", user);
+            }
+            return BadRequest(new Error(2, "User Details not added "));
+
+        }
+        [Authorize(Roles ="admin")]
         [HttpPut("Approvedisapprovedoctor")]
         [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -65,7 +78,7 @@ namespace DoctorAPI.Controllers
             return BadRequest(new Error(2, "Cannot Approve Doctor "));
 
         }
-        [Authorize(Roles = "admin")]
+       [Authorize(Roles = "admin")]
         [HttpGet("GetAllDoctors")]
         [ProducesResponseType(typeof(ICollection<Doctor>), 200)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -79,6 +92,7 @@ namespace DoctorAPI.Controllers
             return NotFound(new Error(1, "No Doctor Details Currently"));
 
         }
+        [Authorize]
         [HttpGet("GetAllApprovedDoctors")]
         [ProducesResponseType(typeof(ICollection<Doctor>), 200)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -92,8 +106,7 @@ namespace DoctorAPI.Controllers
             return NotFound(new Error(1, "No Doctor Details Currently"));
 
         }
-        //[Authorize]
-
+        [Authorize]
         [HttpGet("GetAllPatients")]
         [ProducesResponseType(typeof(ICollection<Patient>), 200)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -107,7 +120,7 @@ namespace DoctorAPI.Controllers
             return NotFound(new Error(1, "No Patient Details Currently"));
 
         }
-        [Authorize]
+        [Authorize(Roles ="admin")]
 
         [HttpDelete("DeleteUser")]
         [ProducesResponseType(StatusCodes. Status202Accepted)]
@@ -138,7 +151,7 @@ namespace DoctorAPI.Controllers
         [Authorize]
 
         [HttpPut("UpdateUserPassword")]
-        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<UserDTO>> UpdateUserPassword(UserDTO key)
         {
@@ -164,7 +177,7 @@ namespace DoctorAPI.Controllers
             return BadRequest(new Error(2, "Cannot Update Doctor "));
 
         }
-        //[Authorize(Roles = "Patient")]
+        [Authorize(Roles = "patient")]
         [HttpPut("UpdatePatientDetails")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -176,6 +189,33 @@ namespace DoctorAPI.Controllers
                 return Accepted("Update Patient Details Succecssfully");
             }
             return BadRequest(new Error(2, "Cannot Update Patient "));
+
+        }
+        [HttpPost("GetSingleDoctor")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<Doctor>> SingleDoctor(IdDTO key)
+        {
+            var user = await _doctorService.GetSingleDocter(key);
+            if (user != null)
+            {
+                return Ok(user);
+            }
+            return BadRequest(new Error(2, "Get Single Doctor was unsuccessfull"));
+
+        }
+        [Authorize]
+        [HttpPost("GetSinglePatient")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<Doctor>> SinglePatient(IdDTO key)
+        {
+            var user = await _patientService.GetSinglePatient(key);
+            if (user != null)
+            {
+                return Ok(user);
+            }
+            return BadRequest(new Error(2, "Get Single Patient was unsuccessfull"));
 
         }
 

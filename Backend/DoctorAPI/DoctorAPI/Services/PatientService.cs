@@ -58,6 +58,17 @@ namespace DoctorAPI.Services
             return null;
         }
 
+        public async Task<Patient> GetSinglePatient(IdDTO key)
+        {
+            Patient patient = await _patientRepo.Get(key.UserId);
+            patient.User = null;
+            if (patient != null)
+            {
+                return patient;
+            }
+            return null;
+        }
+
         public async Task<bool> UpdatePatient(Patient item)
         {
             Patient patient = await _patientRepo.Update(item);

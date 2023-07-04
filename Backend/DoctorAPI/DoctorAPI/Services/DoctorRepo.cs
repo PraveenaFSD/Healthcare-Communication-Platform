@@ -109,6 +109,7 @@ namespace DoctorAPI.Services
                     doctor.Phone= item.Phone;
                     doctor.Address= item.Address;
                     doctor.Email=item.Email;
+                    doctor.Status= item.Status;
                     doctor.Specialization= item.Specialization;
                     doctor.LicenseNumber = item.LicenseNumber;
                     item.Experience= item.Experience;

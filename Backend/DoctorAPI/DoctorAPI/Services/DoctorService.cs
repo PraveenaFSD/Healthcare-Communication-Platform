@@ -43,13 +43,19 @@ namespace DoctorAPI.Services
         public async Task<bool> ApproveDoctor(UpdateDoctorDTO updateDoctor)
         {
             Doctor doctorData = await _repo.Get(updateDoctor.Id);
-            doctorData.Status = updateDoctor.Status;
+            if(doctorData!=null)
 
-            Doctor doctor = await _repo.Update(doctorData);
-            if (doctor != null)
             {
-                return true;
+                doctorData.Status = updateDoctor.Status;
+
+                Doctor doctor = await _repo.Update(doctorData);
+                if (doctor != null)
+                {
+                    return true;
+                }
+
             }
+            
             return false;
         }
 
@@ -66,7 +72,7 @@ namespace DoctorAPI.Services
         public async Task<ICollection<Doctor>> GetAllApprovedDoctors()
         {
             ICollection<Doctor> doctors = await _repo.GetAll();
-            doctors=doctors.Where(u=>u.Status=="approved".ToLower()).ToList();
+            doctors=doctors.Where(u=>u.Status=="aproved".ToLower()).ToList();
             if (doctors != null)
             {
                 return doctors;
@@ -83,6 +89,17 @@ namespace DoctorAPI.Services
             }
             return null; 
 
+        }
+
+        public async Task<Doctor> GetSingleDocter(IdDTO key)
+        {
+            Doctor doctor = await _repo.Get(key.UserId);
+            doctor.User = null;
+            if(doctor!=null)
+            {
+                return doctor;
+            }
+            return null;
         }
 
         public async Task<bool> UpdateDoctor(Doctor item)

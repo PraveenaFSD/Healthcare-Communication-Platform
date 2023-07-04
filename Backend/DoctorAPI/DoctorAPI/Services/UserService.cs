@@ -20,24 +20,47 @@ namespace DoctorAPI.Services
             _patientRepo= patientRepo;
         }
 
+        public async Task<UserDTO> AddAdmin(UserDTO user)
+        {
+            User userdata=new User();
+            userdata.Role = "admin";
+            var hmac = new HMACSHA512();
+            userdata.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(user.Password ?? ""));
+            userdata.PasswordKey = hmac.Key;
+            User userd=await _userRepo.Add(userdata);
+            user.Password = "";
+            if(userd != null)
+            {
+
+                user.UserId = userd.UserId;
+                user.Role = "admin";
+                user.Token = await _tokenGenerate.GenerateToken(user);
+                return user;
+            }
+            return null;
+        }
+
         public async Task<bool> DeleteUser(IdDTO id)
         {
             User user = await _userRepo.Get(id.UserId);
-            if(user.Role=="doctor".ToLower())
-            {
-                Doctor doctor=await _doctorRepo.Delete(id.UserId);
-                if(doctor!=null)
+            if(user != null) {
+                if (user.Role == "doctor".ToLower())
+                {
+                    Doctor doctor = await _doctorRepo.Delete(id.UserId);
+                    if (doctor != null)
+                    {
+                        return true;
+                    }
+
+                }
+
+                Patient patient = await _patientRepo.Delete(id.UserId);
+                if (patient != null)
                 {
                     return true;
                 }
-   
             }
-
-             Patient patient=await _patientRepo.Delete(id.UserId);
-            if(patient!=null)
-            {
-                return true;
-            }
+       
            
             return false;
         }
@@ -60,10 +83,10 @@ namespace DoctorAPI.Services
                 }
             }
 
-            if (userData.Role == "doctor" || (userData.Role == "patient"))
+            if (userData.Role == "doctor" || (userData.Role == "patient") || (userData.Role == "admin"))
             {
                 Doctor doctor = await _doctorRepo.Get(user.UserId);
-                if (doctor!=null && doctor.Status == "approve".ToLower() || userData.Role=="patient")
+                if (doctor!=null && doctor.Status == "approved".ToLower() || (userData.Role=="patient") || (userData.Role == "admin"))
                 {
                     userDetails = new UserDTO();
                     userDetails.UserId = user.UserId;

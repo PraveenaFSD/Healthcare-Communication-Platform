@@ -9,7 +9,10 @@ namespace DoctorAPI.Interfaces
         public Task<bool> ApproveDoctor(UpdateDoctorDTO item);
         public Task<ICollection<Doctor>> GetAllDoctors( );
         public Task<bool> UpdateDoctor(Doctor item);
+
         public Task<ICollection<Doctor>> GetAllApprovedDoctors();
+        public Task<Doctor> GetSingleDocter(IdDTO key);
+
 
 
 

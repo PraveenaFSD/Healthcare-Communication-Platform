@@ -13,14 +13,43 @@ namespace DoctorAPI.Services
             _context = context;
             _logger= logger;
         }
-        public Task<User?> Add(User item)
+        public async Task<User?> Add(User item)
         {
-            throw new NotImplementedException();
+            try
+            {
+                  _context.Add(item);
+                await _context.SaveChangesAsync();
+                return item;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+
+
+            }
+            return null;
         }
 
-        public Task<User?> Delete(int key)
+        public async Task<User?> Delete(int key)
         {
-            throw new NotImplementedException();
+            User user=await Get(key);
+            if (user != null) {
+                try
+                {
+
+                    _context.Remove(user);
+                    _context.SaveChangesAsync();
+                    return user;
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex.Message);
+
+
+                }
+            }
+           
+            return null;
         }
 
         public async Task<User?> Get(int key)
@@ -39,9 +68,20 @@ namespace DoctorAPI.Services
             return null;
         }
 
-        public Task<ICollection<User>?> GetAll()
+        public async Task<ICollection<User>?> GetAll()
         {
-            throw new NotImplementedException();
+            try
+            {
+                ICollection<User> users = await _context.Users.ToListAsync();
+                return users;
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+
+            }
+            return null;
         }
 
         public async Task<User?> Update(User item)

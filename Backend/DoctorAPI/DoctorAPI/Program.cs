@@ -95,10 +95,10 @@ namespace DoctorAPI
 
             app.UseHttpsRedirection();
             app.UseAuthentication();
+            app.UseCors("AngularCORS");
 
             app.UseAuthorization();
 
-            app.UseCors("AngularCORS");
 
             app.MapControllers();
 

@@ -9,6 +9,8 @@ namespace DoctorAPI.Interfaces
 
         public Task<ICollection<Patient>> GetAllDPatients();
         public Task<bool> UpdatePatient(Patient item);
+        public Task<Patient> GetSinglePatient(IdDTO key);
+
 
 
     }

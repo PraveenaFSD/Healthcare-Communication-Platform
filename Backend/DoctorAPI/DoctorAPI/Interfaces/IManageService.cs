@@ -9,6 +9,7 @@ namespace DoctorAPI.Interfaces
         public Task<bool> DeleteUser(IdDTO key);
 
         public Task<UserDTO> UpdateUserPassword(UserDTO user);
+        public Task<UserDTO> AddAdmin(UserDTO user);
        
 
     }
